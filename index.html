@@ -117,26 +117,6 @@
     .screen-title { font-size: 24px; font-weight: 500; line-height: 1.35; color: var(--text-primary); margin-bottom: 8px; }
     .screen-sub { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 32px; }
 
-    .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
-    .mode-card {
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 18px 14px;
-      cursor: pointer;
-      background: var(--bg-card);
-      transition: border-color 0.15s, background 0.15s;
-      text-align: left;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .mode-card:hover { border-color: var(--border-md); }
-    .mode-card.active {
-      border: 1.5px solid var(--accent-mid);
-      background: var(--accent-light);
-    }
-    .mode-icon { font-size: 20px; margin-bottom: 10px; display: block; }
-    .mode-title { font-size: 13px; font-weight: 500; color: var(--text-primary); margin-bottom: 4px; }
-    .mode-desc { font-size: 11px; color: var(--text-secondary); line-height: 1.55; }
-
     .btn-main {
       display: block; width: 100%;
       padding: 14px;
@@ -155,95 +135,6 @@
     .btn-main:disabled { opacity: 0.35; cursor: not-allowed; }
 
     .hint-text { text-align: center; font-size: 12px; color: var(--text-tertiary); margin-top: 12px; }
-
-    /* ── SCREEN: MEASURE ── */
-    .section-label {
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--text-tertiary);
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      margin-bottom: 16px;
-    }
-
-    .img-placeholder {
-      width: 100%;
-      aspect-ratio: 3/2;
-      background: var(--bg-sub);
-      border-radius: var(--radius-md);
-      border: 1px dashed var(--border-md);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-    .img-placeholder .ph-icon { font-size: 28px; opacity: 0.3; }
-    .img-placeholder .ph-label { font-size: 12px; color: var(--text-tertiary); }
-    .img-placeholder .ph-sub { font-size: 11px; color: var(--text-tertiary); opacity: 0.7; }
-
-    .measure-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-    .measure-item label { font-size: 12px; color: var(--text-secondary); display: block; margin-bottom: 5px; }
-    .measure-item input {
-      width: 100%;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 10px 12px;
-      font-size: 14px;
-      font-family: inherit;
-      background: var(--bg-card);
-      color: var(--text-primary);
-      transition: border-color 0.12s;
-    }
-    .measure-item input:focus { outline: none; border-color: var(--accent-mid); }
-    .measure-item input::placeholder { color: var(--text-tertiary); }
-
-    .callout {
-      background: var(--accent-light);
-      border-left: 2px solid var(--accent-mid);
-      border-radius: var(--radius-sm);
-      padding: 10px 12px;
-      font-size: 12px;
-      color: var(--text-secondary);
-      line-height: 1.6;
-      margin-bottom: 24px;
-    }
-
-    .nav-row {
-      display: flex; gap: 10px; margin-top: auto; padding-top: 24px;
-    }
-    .btn-ghost {
-      flex: 0 0 auto;
-      padding: 13px 18px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      font-size: 14px;
-      font-family: inherit;
-      background: transparent;
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: background 0.12s;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .btn-ghost:hover { background: var(--bg-sub); }
-    .btn-ghost:disabled { opacity: 0.3; cursor: not-allowed; }
-    .btn-next {
-      flex: 1;
-      padding: 13px;
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: var(--radius-md);
-      font-size: 14px;
-      font-weight: 500;
-      font-family: inherit;
-      cursor: pointer;
-      transition: opacity 0.15s;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .btn-next:hover { opacity: 0.88; }
-    .btn-next:disabled { opacity: 0.3; cursor: not-allowed; }
 
     /* ── SCREEN: QUIZ ── */
     .progress-wrap { margin-bottom: 24px; }
@@ -507,62 +398,8 @@
     <h1 class="screen-title">골격 자가 진단</h1>
     <p class="screen-sub">웨이브 · 스트레이트 · 내츄럴<br>12가지 문항으로 나의 골격 유형을 확인해보세요.</p>
 
-    <div class="mode-grid">
-      <button class="mode-card active" id="mode-basic" onclick="selectMode('basic')" aria-pressed="true">
-        <span class="mode-icon">📋</span>
-        <div class="mode-title">기본 진단</div>
-        <div class="mode-desc">치수 없이<br>자가 테스트만으로</div>
-      </button>
-      <button class="mode-card" id="mode-precise" onclick="selectMode('precise')" aria-pressed="false">
-        <span class="mode-icon">📐</span>
-        <div class="mode-title">정밀 진단</div>
-        <div class="mode-desc">신체 치수 추가로<br>더 정확한 결과</div>
-      </button>
-    </div>
-
     <button class="btn-main" onclick="startTest()">시작하기</button>
     <p class="hint-text">총 12문항 · 약 5분 소요 </p>
-  </section>
-
-  <!-- SCREEN 1: MEASURE -->
-  <section class="screen" id="screen-measure" aria-label="신체 치수 입력">
-    <div class="section-label">신체 치수 입력</div>
-
-    <img src="images/IMG-00.png" alt="신체 측정 위치 가이드" 
-      style="width:100%; border-radius:12px; display:block; margin-bottom:20px;">
-
-    <div class="measure-grid">
-      <div class="measure-item">
-        <label for="m-height">키 (cm)</label>
-        <input type="number" id="m-height" placeholder="예: 165" inputmode="decimal">
-      </div>
-      <div class="measure-item">
-        <label for="m-weight">몸무게 (kg)</label>
-        <input type="number" id="m-weight" placeholder="예: 55" inputmode="decimal">
-      </div>
-      <div class="measure-item">
-        <label for="m-shoulder">① 어깨너비 (cm)</label>
-        <input type="number" id="m-shoulder" placeholder="예: 38" inputmode="decimal">
-      </div>
-      <div class="measure-item">
-        <label for="m-wrist">② 손목둘레 (cm)</label>
-        <input type="number" id="m-wrist" placeholder="예: 14" inputmode="decimal">
-      </div>
-      <div class="measure-item">
-        <label for="m-waist">③ 허리둘레 (cm)</label>
-        <input type="number" id="m-waist" placeholder="예: 68" inputmode="decimal">
-      </div>
-      <div class="measure-item">
-        <label for="m-hip">④ 골반둘레 (cm)</label>
-        <input type="number" id="m-hip" placeholder="예: 90" inputmode="decimal">
-      </div>
-    </div>
-    <div class="callout">손목둘레(②)가 가장 중요한 수치예요. 손목 가장 가는 부분을 줄자로 측정해주세요. 모르는 항목은 비워도 됩니다.</div>
-
-    <div class="nav-row">
-      <button class="btn-ghost" onclick="showScreen('screen-mode')">← 이전</button>
-      <button class="btn-next" onclick="showScreen('screen-quiz'); renderQ(0);">다음 →</button>
-    </div>
   </section>
 
   <!-- SCREEN 2: QUIZ -->
@@ -783,28 +620,15 @@
     }
   };
 
-  let currentMode = 'basic';
   let currentQ = 0;
   let answers = new Array(12).fill(null);
   let radarInstance = null;
 
-  function selectMode(mode) {
-    currentMode = mode;
-    document.getElementById('mode-basic').classList.toggle('active', mode === 'basic');
-    document.getElementById('mode-precise').classList.toggle('active', mode === 'precise');
-    document.getElementById('mode-basic').setAttribute('aria-pressed', mode === 'basic');
-    document.getElementById('mode-precise').setAttribute('aria-pressed', mode === 'precise');
-  }
-
   function startTest() {
     currentQ = 0;
     answers = new Array(12).fill(null);
-    if (currentMode === 'precise') {
-      showScreen('screen-measure');
-    } else {
-      showScreen('screen-quiz');
-      renderQ(0);
-    }
+    showScreen('screen-quiz');
+    renderQ(0);
   }
 
   function showScreen(id) {
@@ -876,39 +700,6 @@
       currentQ--;
       renderQ(currentQ);
     }
-  }
-
-  function calcScores() {
-    let w = 0, s = 0, n = 0;
-    answers.forEach((ans, i) => {
-      if (ans === null || ans === -1) return;
-      const sc = questions[i].scores[ans];
-      w += sc[0]; s += sc[1]; n += sc[2];
-    });
-
-    if (currentMode === 'precise') {
-      const wrist = parseFloat(document.getElementById('m-wrist').value);
-      if (!isNaN(wrist)) {
-        if (wrist < 14) w += 3;
-        else if (wrist <= 16) s += 3;
-        else n += 3;
-      }
-      const shoulder = parseFloat(document.getElementById('m-shoulder').value);
-      const hip = parseFloat(document.getElementById('m-hip').value);
-      if (!isNaN(shoulder) && !isNaN(hip)) {
-        if (hip > shoulder + 4) w += 2;
-        else if (shoulder > hip + 2) s += 2;
-        else n += 1;
-      }
-    }
-
-    const total = w + s + n || 1;
-    return {
-      wave: Math.round((w / total) * 100),
-      straight: Math.round((s / total) * 100),
-      natural: Math.round((n / total) * 100),
-      dominant: w >= s && w >= n ? 'wave' : s >= n ? 'straight' : 'natural'
-    };
   }
 
   function showResult() {
@@ -1023,7 +814,7 @@
   <footer style="text-align:center; padding: 24px 20px; font-size: 12px; color: var(--text-tertiary);">
     이 사이트는 응답 내용 등 개인 정보를 수집하지 않으며, 방문 통계 수집만을 위해 Google Analytics를 사용합니다.
     <br>
-    Made by <a href="www.linkedin.com/in/2shin0">이신영</a>
+    Made by <a href="https://www.linkedin.com/in/2shin0">이신영</a>
   </footer>
 
   <!-- toast -->
