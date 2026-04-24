@@ -733,6 +733,23 @@
     }
   }
 
+  function calcScores() {
+    let w = 0, s = 0, n = 0;
+    answers.forEach((ans, i) => {
+      if (ans === null || ans === -1) return;
+      const sc = questions[i].scores[ans];
+      w += sc[0]; s += sc[1]; n += sc[2];
+    });
+
+    const total = w + s + n || 1;
+    return {
+      wave: Math.round((w / total) * 100),
+      straight: Math.round((s / total) * 100),
+      natural: Math.round((n / total) * 100),
+      dominant: w >= s && w >= n ? 'wave' : s >= n ? 'straight' : 'natural'
+    };
+  }
+
   function showResult() {
     showScreen('screen-result');
     const sc = calcScores();
