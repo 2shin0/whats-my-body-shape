@@ -134,6 +134,17 @@
     .btn-main:hover { opacity: 0.88; }
     .btn-main:disabled { opacity: 0.35; cursor: not-allowed; }
 
+    .hint-text { text-align: center; font-size: 12px; color: var(--text-tertiary); margin-top: 12px; }
+
+    /* ── SCREEN: QUIZ ── */
+    .progress-wrap { margin-bottom: 24px; }
+    .progress-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-tertiary); margin-bottom: 8px; }
+    .progress-track { height: 2px; background: var(--border); border-radius: 2px; }
+    .progress-fill { height: 2px; background: var(--accent-mid); border-radius: 2px; transition: width 0.35s ease; }
+
+    .nav-row {
+      display: flex; gap: 10px; margin-top: auto; padding-top: 24px;
+    }
     .btn-ghost {
       flex: 0 0 auto;
       padding: 13px 18px;
@@ -147,10 +158,24 @@
       transition: background 0.12s;
       -webkit-tap-highlight-color: transparent;
     }
-
-    .hint-text { text-align: center; font-size: 12px; color: var(--text-tertiary); margin-top: 12px; }
-
-    /* ── SCREEN: QUIZ ── */
+    .btn-ghost:hover { background: var(--bg-sub); }
+    .btn-ghost:disabled { opacity: 0.3; cursor: not-allowed; }
+    .btn-next {
+      flex: 1;
+      padding: 13px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-next:hover { opacity: 0.88; }
+    .btn-next:disabled { opacity: 0.3; cursor: not-allowed; }
     .progress-wrap { margin-bottom: 24px; }
     .progress-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-tertiary); margin-bottom: 8px; }
     .progress-track { height: 2px; background: var(--border); border-radius: 2px; }
@@ -193,16 +218,9 @@
     }
 
     .q-img {
-      width: 100%;
-      aspect-ratio: 16/7;
-      background: var(--bg-sub);
-      border-radius: var(--radius-sm);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      margin-bottom: 16px;
+      background: none;
+      border: none;
+      margin-bottom: 0;
     }
     .q-img .ph-icon { font-size: 22px; opacity: 0.3; }
     .q-img .ph-label { font-size: 11px; color: var(--text-tertiary); }
