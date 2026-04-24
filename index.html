@@ -114,16 +114,6 @@
     .screen { display: none; flex-direction: column; flex: 1; padding: 32px 0 40px; }
     .screen.active { display: flex; }
 
-    /* ── SCREEN: MODE ── */
-    .logo-mark {
-      width: 44px; height: 44px;
-      border-radius: 12px;
-      background: var(--accent);
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 24px;
-    }
-    .logo-mark svg { width: 22px; height: 22px; fill: #fff; }
-
     .screen-title { font-size: 24px; font-weight: 500; line-height: 1.35; color: var(--text-primary); margin-bottom: 8px; }
     .screen-sub { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 32px; }
 
@@ -514,11 +504,6 @@
 
   <!-- SCREEN 0: MODE SELECT -->
   <section class="screen active" id="screen-mode" aria-label="진단 모드 선택">
-    <div class="logo-mark" aria-hidden="true">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
-      </svg>
-    </div>
     <h1 class="screen-title">골격 자가 진단</h1>
     <p class="screen-sub">웨이브 · 스트레이트 · 내츄럴<br>12가지 문항으로 나의 골격 유형을 확인해보세요.</p>
 
@@ -543,11 +528,8 @@
   <section class="screen" id="screen-measure" aria-label="신체 치수 입력">
     <div class="section-label">신체 치수 입력</div>
 
-    <div class="img-placeholder" role="img" aria-label="신체 측정 위치 가이드 이미지">
-      <span class="ph-icon">🖼</span>
-      <span class="ph-label">신체 측정 위치 가이드</span>
-      <span class="ph-sub">IMG-00 · 전신 실루엣 + 측정 위치 번호 표시</span>
-    </div>
+    <img src="images/IMG-00.png" alt="신체 측정 위치 가이드" 
+      style="width:100%; border-radius:12px; display:block; margin-bottom:20px;">
 
     <div class="measure-grid">
       <div class="measure-item">
