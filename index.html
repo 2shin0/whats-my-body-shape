@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO -->
+  <title>골격 자가 진단 — 나의 골격 유형 알아보기</title>
+  <meta name="description" content="웨이브, 스트레이트, 내츄럴 골격 유형을 12가지 자가 테스트로 진단해보세요. 신체 치수 입력 없이도 쉽게 진단할 수 있어요.">
+  <meta name="keywords" content="골격 진단, 골격 유형, 웨이브 골격, 스트레이트 골격, 내츄럴 골격, 자가진단, 체형 진단">
+  <meta name="author" content="골격 자가 진단">
+  <meta name="robots" content="index, follow">
+
+  <!-- OG -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="골격 자가 진단 — 나의 골격 유형 알아보기">
+  <meta property="og:description" content="웨이브, 스트레이트, 내츄럴 골격 유형을 12가지 자가 테스트로 진단해보세요.">
+  <meta property="og:url" content="https://yourdomain.com">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="골격 자가 진단">
+  <meta name="twitter:description" content="웨이브, 스트레이트, 내츄럴 골격 유형을 12가지 자가 테스트로 진단해보세요.">
+
+  <!-- Umami Analytics: 아래 주석을 실제 Umami 스크립트로 교체하세요 -->
+  <!-- <script async src="https://analytics.umami.is/script.js" data-website-id="YOUR-WEBSITE-ID"></script> -->
+
+  <!-- Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #FAFAF8;
+      --bg-card: #FFFFFF;
+      --bg-sub: #F4F3EF;
+      --bg-active: #EEEDFE;
+      --text-primary: #1A1A18;
+      --text-secondary: #5A5A56;
+      --text-tertiary: #9A9A94;
+      --border: rgba(0,0,0,0.08);
+      --border-md: rgba(0,0,0,0.14);
+      --accent: #534AB7;
+      --accent-mid: #7F77DD;
+      --accent-light: #EEEDFE;
+      --wave: #0F6E56;
+      --wave-light: #E1F5EE;
+      --wave-mid: #1D9E75;
+      --natural: #993C1D;
+      --natural-light: #FAECE7;
+      --natural-mid: #D85A30;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #111110;
+        --bg-card: #1C1C1A;
+        --bg-sub: #242422;
+        --bg-active: #26215C;
+        --text-primary: #F0EFE8;
+        --text-secondary: #A0A09A;
+        --text-tertiary: #606060;
+        --border: rgba(255,255,255,0.08);
+        --border-md: rgba(255,255,255,0.14);
+        --accent: #AFA9EC;
+        --accent-mid: #7F77DD;
+        --accent-light: #26215C;
+        --wave: #5DCAA5;
+        --wave-light: #04342C;
+        --wave-mid: #1D9E75;
+        --natural: #F0997B;
+        --natural-light: #4A1B0C;
+        --natural-mid: #D85A30;
+      }
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* layout */
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* screen manager */
+    .screen { display: none; flex-direction: column; flex: 1; padding: 32px 0 40px; }
+    .screen.active { display: flex; }
+
+    /* ── SCREEN: MODE ── */
+    .logo-mark {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      background: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px;
+    }
+    .logo-mark svg { width: 22px; height: 22px; fill: #fff; }
+
+    .screen-title { font-size: 24px; font-weight: 500; line-height: 1.35; color: var(--text-primary); margin-bottom: 8px; }
+    .screen-sub { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 32px; }
+
+    .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+    .mode-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 18px 14px;
+      cursor: pointer;
+      background: var(--bg-card);
+      transition: border-color 0.15s, background 0.15s;
+      text-align: left;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .mode-card:hover { border-color: var(--border-md); }
+    .mode-card.active {
+      border: 1.5px solid var(--accent-mid);
+      background: var(--accent-light);
+    }
+    .mode-icon { font-size: 20px; margin-bottom: 10px; display: block; }
+    .mode-title { font-size: 13px; font-weight: 500; color: var(--text-primary); margin-bottom: 4px; }
+    .mode-desc { font-size: 11px; color: var(--text-secondary); line-height: 1.55; }
+
+    .btn-main {
+      display: block; width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-main:hover { opacity: 0.88; }
+    .btn-main:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    .hint-text { text-align: center; font-size: 12px; color: var(--text-tertiary); margin-top: 12px; }
+
+    /* ── SCREEN: MEASURE ── */
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 16px;
+    }
+
+    .img-placeholder {
+      width: 100%;
+      aspect-ratio: 3/2;
+      background: var(--bg-sub);
+      border-radius: var(--radius-md);
+      border: 1px dashed var(--border-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .img-placeholder .ph-icon { font-size: 28px; opacity: 0.3; }
+    .img-placeholder .ph-label { font-size: 12px; color: var(--text-tertiary); }
+    .img-placeholder .ph-sub { font-size: 11px; color: var(--text-tertiary); opacity: 0.7; }
+
+    .measure-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .measure-item label { font-size: 12px; color: var(--text-secondary); display: block; margin-bottom: 5px; }
+    .measure-item input {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      font-size: 14px;
+      font-family: inherit;
+      background: var(--bg-card);
+      color: var(--text-primary);
+      transition: border-color 0.12s;
+    }
+    .measure-item input:focus { outline: none; border-color: var(--accent-mid); }
+    .measure-item input::placeholder { color: var(--text-tertiary); }
+
+    .callout {
+      background: var(--accent-light);
+      border-left: 2px solid var(--accent-mid);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .nav-row {
+      display: flex; gap: 10px; margin-top: auto; padding-top: 24px;
+    }
+    .btn-ghost {
+      flex: 0 0 auto;
+      padding: 13px 18px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-family: inherit;
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: background 0.12s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-ghost:hover { background: var(--bg-sub); }
+    .btn-ghost:disabled { opacity: 0.3; cursor: not-allowed; }
+    .btn-next {
+      flex: 1;
+      padding: 13px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-next:hover { opacity: 0.88; }
+    .btn-next:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    /* ── SCREEN: QUIZ ── */
+    .progress-wrap { margin-bottom: 24px; }
+    .progress-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-tertiary); margin-bottom: 8px; }
+    .progress-track { height: 2px; background: var(--border); border-radius: 2px; }
+    .progress-fill { height: 2px; background: var(--accent-mid); border-radius: 2px; transition: width 0.35s ease; }
+
+    .q-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 12px;
+      flex: 1;
+    }
+    .q-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--accent-mid);
+      background: var(--accent-light);
+      padding: 3px 8px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+      letter-spacing: 0.03em;
+    }
+    .q-text {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1.55;
+      margin-bottom: 10px;
+    }
+    .q-hint {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin-bottom: 16px;
+      padding: 10px 12px;
+      background: var(--bg-sub);
+      border-radius: var(--radius-sm);
+    }
+
+    .q-img {
+      width: 100%;
+      aspect-ratio: 16/7;
+      background: var(--bg-sub);
+      border-radius: var(--radius-sm);
+      border: 1px dashed var(--border-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+    .q-img .ph-icon { font-size: 22px; opacity: 0.3; }
+    .q-img .ph-label { font-size: 11px; color: var(--text-tertiary); }
+
+    .options { display: flex; flex-direction: column; gap: 8px; }
+    .opt-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 11px 14px;
+      cursor: pointer;
+      background: var(--bg);
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--text-primary);
+      line-height: 1.45;
+      text-align: left;
+      transition: border-color 0.1s, background 0.1s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .opt-btn:hover { border-color: var(--border-md); background: var(--bg-sub); }
+    .opt-btn.selected {
+      border: 1.5px solid var(--accent-mid);
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+    .opt-dot {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border-md);
+      flex-shrink: 0;
+      transition: background 0.1s, border-color 0.1s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .opt-btn.selected .opt-dot {
+      background: var(--accent-mid);
+      border-color: var(--accent-mid);
+    }
+    .opt-btn.selected .opt-dot::after {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: #fff;
+    }
+
+    .opt-skip {
+      display: block;
+      width: 100%;
+      margin-top: 6px;
+      padding: 8px;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-family: inherit;
+      color: var(--text-tertiary);
+      background: transparent;
+      cursor: pointer;
+      text-align: center;
+      transition: color 0.12s, border-color 0.12s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .opt-skip:hover { color: var(--text-secondary); border-color: var(--border-md); }
+    .opt-skip.selected { color: var(--text-secondary); border-color: var(--border-md); background: var(--bg-sub); }
+
+    /* ── SCREEN: RESULT ── */
+    .result-top { text-align: center; margin-bottom: 28px; }
+    .result-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      letter-spacing: 0.04em;
+    }
+    .badge-wave { background: var(--wave-light); color: var(--wave); }
+    .badge-straight { background: var(--accent-light); color: var(--accent); }
+    .badge-natural { background: var(--natural-light); color: var(--natural); }
+
+    .result-title { font-size: 26px; font-weight: 500; margin-bottom: 8px; }
+    .result-sub { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+    .score-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 24px; }
+    .score-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 10px;
+      text-align: center;
+    }
+    .score-card.dominant { border-color: var(--accent-mid); }
+    .sc-label { font-size: 11px; color: var(--text-tertiary); margin-bottom: 6px; }
+    .sc-value { font-size: 24px; font-weight: 500; }
+    .sc-wave { color: var(--wave-mid); }
+    .sc-straight { color: var(--accent-mid); }
+    .sc-natural { color: var(--natural-mid); }
+
+    .radar-wrap {
+      display: flex; justify-content: center;
+      margin-bottom: 24px;
+    }
+    .radar-wrap canvas { max-width: 260px; max-height: 260px; }
+
+    .result-desc {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 12px;
+    }
+    .result-desc h3 { font-size: 14px; font-weight: 500; color: var(--text-primary); margin-bottom: 8px; }
+    .result-desc p { font-size: 13px; color: var(--text-secondary); line-height: 1.75; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+    .tag {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--border-md);
+      color: var(--text-secondary);
+      background: var(--bg-sub);
+    }
+
+    .result-tip {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .result-tip h3 { font-size: 14px; font-weight: 500; color: var(--text-primary); margin-bottom: 10px; }
+    .tip-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .tip-list li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding-left: 16px; position: relative; }
+    .tip-list li::before { content: '—'; position: absolute; left: 0; color: var(--text-tertiary); }
+
+    .action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .btn-share {
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-family: inherit;
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: background 0.12s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-share:hover { background: var(--bg-sub); }
+    .btn-retry {
+      padding: 12px;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 500;
+      font-family: inherit;
+      background: var(--accent);
+      color: #fff;
+      cursor: pointer;
+      transition: opacity 0.12s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-retry:hover { opacity: 0.88; }
+
+    /* toast */
+    .toast {
+      position: fixed;
+      bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: var(--text-primary);
+      color: var(--bg);
+      font-size: 13px;
+      padding: 10px 18px;
+      border-radius: 20px;
+      opacity: 0;
+      transition: opacity 0.2s, transform 0.2s;
+      pointer-events: none;
+      white-space: nowrap;
+      z-index: 999;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* animation */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .screen.active > * { animation: fadeUp 0.3s ease both; }
+    .screen.active > *:nth-child(2) { animation-delay: 0.05s; }
+    .screen.active > *:nth-child(3) { animation-delay: 0.1s; }
+    .screen.active > *:nth-child(4) { animation-delay: 0.15s; }
+
+    @media (min-width: 600px) {
+      .container { padding: 0 24px; }
+      .screen { padding: 48px 0 56px; }
+      .q-text { font-size: 17px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- SCREEN 0: MODE SELECT -->
+  <section class="screen active" id="screen-mode" aria-label="진단 모드 선택">
+    <div class="logo-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
+      </svg>
+    </div>
+    <h1 class="screen-title">골격 자가 진단</h1>
+    <p class="screen-sub">웨이브 · 스트레이트 · 내츄럴<br>12가지 문항으로 나의 골격 유형을 확인해보세요.</p>
+
+    <div class="mode-grid">
+      <button class="mode-card active" id="mode-basic" onclick="selectMode('basic')" aria-pressed="true">
+        <span class="mode-icon">📋</span>
+        <div class="mode-title">기본 진단</div>
+        <div class="mode-desc">치수 없이<br>자가 테스트만으로</div>
+      </button>
+      <button class="mode-card" id="mode-precise" onclick="selectMode('precise')" aria-pressed="false">
+        <span class="mode-icon">📐</span>
+        <div class="mode-title">정밀 진단</div>
+        <div class="mode-desc">신체 치수 추가로<br>더 정확한 결과</div>
+      </button>
+    </div>
+
+    <button class="btn-main" onclick="startTest()">시작하기</button>
+    <p class="hint-text">총 12문항 · 약 5분 소요 · 개인정보 수집 없음</p>
+  </section>
+
+  <!-- SCREEN 1: MEASURE -->
+  <section class="screen" id="screen-measure" aria-label="신체 치수 입력">
+    <div class="section-label">신체 치수 입력</div>
+
+    <div class="img-placeholder" role="img" aria-label="신체 측정 위치 가이드 이미지">
+      <span class="ph-icon">🖼</span>
+      <span class="ph-label">신체 측정 위치 가이드</span>
+      <span class="ph-sub">IMG-00 · 전신 실루엣 + 측정 위치 번호 표시</span>
+    </div>
+
+    <div class="measure-grid">
+      <div class="measure-item">
+        <label for="m-height">키 (cm)</label>
+        <input type="number" id="m-height" placeholder="예: 165" inputmode="decimal">
+      </div>
+      <div class="measure-item">
+        <label for="m-weight">몸무게 (kg)</label>
+        <input type="number" id="m-weight" placeholder="예: 55" inputmode="decimal">
+      </div>
+      <div class="measure-item">
+        <label for="m-shoulder">① 어깨너비 (cm)</label>
+        <input type="number" id="m-shoulder" placeholder="예: 38" inputmode="decimal">
+      </div>
+      <div class="measure-item">
+        <label for="m-wrist">② 손목둘레 (cm)</label>
+        <input type="number" id="m-wrist" placeholder="예: 14" inputmode="decimal">
+      </div>
+      <div class="measure-item">
+        <label for="m-waist">③ 허리둘레 (cm)</label>
+        <input type="number" id="m-waist" placeholder="예: 68" inputmode="decimal">
+      </div>
+      <div class="measure-item">
+        <label for="m-hip">④ 골반둘레 (cm)</label>
+        <input type="number" id="m-hip" placeholder="예: 90" inputmode="decimal">
+      </div>
+    </div>
+    <div class="callout">손목둘레(②)가 가장 중요한 수치예요. 손목 가장 가는 부분을 줄자로 측정해주세요. 모르는 항목은 비워도 됩니다.</div>
+
+    <div class="nav-row">
+      <button class="btn-ghost" onclick="showScreen('screen-mode')">← 이전</button>
+      <button class="btn-next" onclick="showScreen('screen-quiz'); renderQ(0);">다음 →</button>
+    </div>
+  </section>
+
+  <!-- SCREEN 2: QUIZ -->
+  <section class="screen" id="screen-quiz" aria-label="골격 진단 문항">
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="q-counter">1 / 12</span>
+        <span id="q-category">뼈 두께</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-tag" id="q-method">행동 기반</span>
+      <p class="q-text" id="q-text"></p>
+      <div class="q-hint" id="q-hint"></div>
+      <div class="q-img" id="q-img" role="img" aria-label="문항 가이드 이미지">
+        <span class="ph-icon">🖼</span>
+        <span class="ph-label" id="q-img-label"></span>
+      </div>
+      <div class="options" id="q-options" role="radiogroup" aria-label="선택지"></div>
+      <button class="opt-skip" id="q-skip" onclick="selectOption(-1)">잘 모르겠어요</button>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-ghost" id="btn-prev" onclick="prevQ()" disabled>← 이전</button>
+      <button class="btn-next" id="btn-next" onclick="nextQ()" disabled>다음 →</button>
+    </div>
+  </section>
+
+  <!-- SCREEN 3: RESULT -->
+  <section class="screen" id="screen-result" aria-label="진단 결과">
+    <div class="result-top">
+      <div class="result-badge" id="result-badge">결과</div>
+      <div class="result-title" id="result-title"></div>
+      <div class="result-sub" id="result-sub"></div>
+    </div>
+
+    <div class="score-row">
+      <div class="score-card" id="card-wave">
+        <div class="sc-label">웨이브</div>
+        <div class="sc-value sc-wave" id="score-wave">0%</div>
+      </div>
+      <div class="score-card" id="card-straight">
+        <div class="sc-label">스트레이트</div>
+        <div class="sc-value sc-straight" id="score-straight">0%</div>
+      </div>
+      <div class="score-card" id="card-natural">
+        <div class="sc-label">내츄럴</div>
+        <div class="sc-value sc-natural" id="score-natural">0%</div>
+      </div>
+    </div>
+
+    <div class="radar-wrap">
+      <canvas id="radarChart" width="260" height="260" aria-label="골격 유형 레이더 그래프"></canvas>
+    </div>
+
+    <div class="result-desc">
+      <h3 id="result-desc-title"></h3>
+      <p id="result-desc-text"></p>
+      <div class="tag-row" id="result-tags"></div>
+    </div>
+
+    <div class="result-tip">
+      <h3 id="result-tip-title">스타일 팁</h3>
+      <ul class="tip-list" id="result-tips"></ul>
+    </div>
+
+    <div class="action-row">
+      <button class="btn-share" onclick="shareResult()">결과 공유하기</button>
+      <button class="btn-retry" onclick="resetAll()">다시 진단하기</button>
+    </div>
+  </section>
+
+</div>
+
+<!-- toast -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+  const questions = [
+    {
+      text: "엄지와 검지로 반대쪽 손목을 감싸보세요.",
+      hint: "뼈대의 굵기를 확인하는 문항이에요. 살이 아닌 뼈를 기준으로 생각해주세요.",
+      method: "행동 기반", category: "뼈 두께",
+      needImg: true, imgLabel: "IMG-01 · 손목 감싸기 방법 + 결과 3단계 비교",
+      options: ["손가락이 겹친다", "딱 맞다", "닿지 않는다"],
+      scores: [[3,0,0],[0,3,0],[0,0,3]]
+    },
+    {
+      text: "쇄골 위 오목한 곳에 손가락을 올려보세요.",
+      hint: "목 아래, 가슴 위쪽 쇄골 바로 위의 움푹 들어간 부분이에요.",
+      method: "행동 기반", category: "뼈 두께",
+      needImg: true, imgLabel: "IMG-02 · 쇄골 위치 표시 + 손가락 올리는 방향",
+      options: ["손가락 2개 이상 들어간다", "1개 들어간다", "거의 안 들어간다"],
+      scores: [[3,0,0],[1,2,0],[0,1,3]]
+    },
+    {
+      text: "어깨 끝을 손으로 만져보세요.",
+      hint: "어깨 가장 바깥쪽 끝부분을 손가락으로 눌러보세요.",
+      method: "행동 기반", category: "어깨 골격",
+      needImg: true, imgLabel: "IMG-03 · 어깨 끝(견봉) 위치 표시",
+      options: ["뾰족한 뼈가 뚜렷하게 만져진다", "살짝 만져진다", "잘 안 만져진다"],
+      scores: [[0,0,3],[0,2,1],[3,0,0]]
+    },
+    {
+      text: "주먹을 꽉 쥐고 손가락 관절을 봐주세요.",
+      hint: "손등 쪽 손가락 마디가 얼마나 튀어오르는지 확인해요.",
+      method: "행동 기반", category: "관절 크기",
+      needImg: true, imgLabel: "IMG-04 · 관절 올라온 정도 3단계 비교",
+      options: ["관절이 뚜렷하게 올라온다", "살짝 올라온다", "거의 평평하다"],
+      scores: [[0,0,3],[0,2,1],[3,0,0]]
+    },
+    {
+      text: "무릎 앞 슬개골(무릎뼈)이 눈에 띄나요?",
+      hint: "서 있거나 앉은 상태에서 무릎 정면을 봐주세요. 무릎뼈가 도드라져 보이는 정도예요.",
+      method: "관찰 기반", category: "관절 크기",
+      needImg: true, imgLabel: "IMG-05 · 슬개골 위치 + 뚜렷한 정도 3단계 비교",
+      options: ["거의 안 보인다", "살짝 보인다", "뚜렷하게 튀어나와 보인다"],
+      scores: [[3,1,0],[0,2,1],[0,0,3]]
+    },
+    {
+      text: "옆에서 본 내 몸의 두께는 어떤가요?",
+      hint: "거울 또는 사진을 참고해주세요. 앞뒤(가슴-등) 방향 두께를 봐요.",
+      method: "상대 비교", category: "신체 두께",
+      needImg: true, imgLabel: "IMG-06 · 측면 실루엣 3단계 비교 (납작 / 보통 / 두꺼움)",
+      options: ["납작한 편이다", "보통이다", "앞뒤로 두꺼운 편이다"],
+      scores: [[3,0,0],[0,3,0],[0,0,3]]
+    },
+    {
+      text: "허벅지 살을 손으로 한 움큼 잡아보세요.",
+      hint: "앉은 상태에서 허벅지 안쪽이나 바깥쪽을 잡아보세요.",
+      method: "행동 기반", category: "살의 질감",
+      needImg: false,
+      options: ["부드럽고 잘 잡힌다", "탄탄하고 두껍게 잡힌다", "근육처럼 단단하게 잡힌다"],
+      scores: [[3,0,0],[0,3,0],[0,1,2]]
+    },
+    {
+      text: "정면에서 봤을 때 허리가 어깨·골반보다 얼마나 들어가 있나요?",
+      hint: "어깨 너비와 골반 너비를 기준으로, 허리가 얼마나 잘록한지 봐요.",
+      method: "상대 비교", category: "허리 라인",
+      needImg: true, imgLabel: "IMG-08 · 허리 들어간 정도 3단계 실루엣",
+      options: ["뚜렷하게 들어간다", "약간 들어간다", "거의 차이가 없다"],
+      scores: [[3,0,0],[1,2,0],[0,2,1]]
+    },
+    {
+      text: "살이 찌거나 빠질 때 어디가 먼저 변하나요?",
+      hint: "전반적인 경향을 생각해주세요.",
+      method: "경험 기반", category: "무게중심",
+      needImg: false,
+      options: ["허리 아래 (허벅지·엉덩이)", "전체적으로 고르게", "허리 위 (배·등·팔)"],
+      scores: [[3,0,0],[0,2,1],[0,1,2]]
+    },
+    {
+      text: "상의와 하의 중 사이즈를 고를 때 더 신경 쓰이는 쪽은?",
+      hint: "기성복 구매 시 어디가 잘 안 맞아서 고민하는지 생각해보세요.",
+      method: "경험 기반", category: "골격 무게중심",
+      needImg: false,
+      options: ["하의 (허리·골반이 잘 안 맞음)", "둘 다 비슷함", "상의 (어깨·가슴이 잘 안 맞음)"],
+      scores: [[3,0,0],[0,3,0],[0,0,3]]
+    },
+    {
+      text: "운동을 하면 근육이 잘 생기는 편인가요?",
+      hint: "운동 경험이 없다면 주변과 비교해서 생각해보세요.",
+      method: "경험 기반", category: "근육·골격 유형",
+      needImg: false,
+      options: ["잘 안 생기고 살로 찌는 편", "보통", "금방 생기고 선명하게 보이는 편"],
+      scores: [[2,1,0],[0,2,1],[0,0,3]]
+    },
+    {
+      text: "전체적인 몸의 인상은 어떤가요?",
+      hint: "본인 또는 주변 사람이 느끼는 첫인상을 떠올려보세요.",
+      method: "종합 인상", category: "골격 종합",
+      needImg: true, imgLabel: "IMG-12 · 웨이브·스트레이트·내츄럴 전신 실루엣 비교",
+      options: ["가볍고 부드러운 느낌", "탄탄하고 직선적인 느낌", "크고 존재감 있는 느낌"],
+      scores: [[3,0,0],[0,3,0],[0,0,3]]
+    }
+  ];
+
+  const resultData = {
+    wave: {
+      label: "웨이브 골격",
+      badgeClass: "badge-wave",
+      descTitle: "웨이브 골격의 특징",
+      desc: "뼈대가 가늘고 작으며 살이 부드럽고 하체에 무게감이 실리는 경향이 있어요. 허리 라인이 뚜렷하게 들어가고 전체적으로 가볍고 섬세한 인상을 줍니다.",
+      tags: ["가는 뼈대", "부드러운 살감", "뚜렷한 허리 라인", "하체 무게중심", "작은 관절"],
+      tips: [
+        "허리 라인을 살려주는 핏의 옷이 잘 어울려요.",
+        "하체보다 상체에 포인트를 주는 스타일링이 효과적이에요.",
+        "너무 오버사이즈한 실루엣은 골격의 섬세함을 가릴 수 있어요.",
+        "소재는 부드럽고 흘러내리는 드레이프 계열이 잘 맞아요."
+      ]
+    },
+    straight: {
+      label: "스트레이트 골격",
+      badgeClass: "badge-straight",
+      descTitle: "스트레이트 골격의 특징",
+      desc: "뼈대가 중간 두께이고 살이 탄탄하며 상체에 볼륨감이 있어요. 전체적으로 직선적이고 균형 잡힌 인상을 주며 운동 시 근육이 잘 붙는 편이에요.",
+      tags: ["중간 뼈대", "탄탄한 살감", "상체 볼륨", "직선적 실루엣", "균형잡힌 관절"],
+      tips: [
+        "심플하고 직선적인 실루엣이 골격의 균형미를 잘 살려줘요.",
+        "상체 볼륨이 있어 V넥이나 열린 네크라인이 잘 어울려요.",
+        "하이웨이스트 아이템으로 다리 라인을 강조해보세요.",
+        "너무 장식적이거나 복잡한 디자인보다 깔끔한 핏이 효과적이에요."
+      ]
+    },
+    natural: {
+      label: "내츄럴 골격",
+      badgeClass: "badge-natural",
+      descTitle: "내츄럴 골격의 특징",
+      desc: "뼈대가 굵고 관절이 뚜렷하게 보여요. 어깨가 각지고 존재감 있는 골격이며 근육이 잘 생기고 전체적으로 크고 자연스러운 인상을 줍니다.",
+      tags: ["굵은 뼈대", "뚜렷한 관절", "각진 어깨", "근육질 체질", "존재감 있는 체형"],
+      tips: [
+        "골격의 존재감을 살리는 오버사이즈, 루즈핏이 잘 어울려요.",
+        "딱 붙는 핏보다 여유 있는 실루엣이 자연스럽게 보여요.",
+        "어깨 선을 강조하거나 어깨 패드 있는 아이템이 잘 맞아요.",
+        "소재는 두께감 있는 천연 소재(린넨, 면, 데님)가 골격과 잘 어울려요."
+      ]
+    }
+  };
+
+  let currentMode = 'basic';
+  let currentQ = 0;
+  let answers = new Array(12).fill(null);
+  let radarInstance = null;
+
+  function selectMode(mode) {
+    currentMode = mode;
+    document.getElementById('mode-basic').classList.toggle('active', mode === 'basic');
+    document.getElementById('mode-precise').classList.toggle('active', mode === 'precise');
+    document.getElementById('mode-basic').setAttribute('aria-pressed', mode === 'basic');
+    document.getElementById('mode-precise').setAttribute('aria-pressed', mode === 'precise');
+  }
+
+  function startTest() {
+    currentQ = 0;
+    answers = new Array(12).fill(null);
+    if (currentMode === 'precise') {
+      showScreen('screen-measure');
+    } else {
+      showScreen('screen-quiz');
+      renderQ(0);
+    }
+  }
+
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const el = document.getElementById(id);
+    el.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderQ(idx) {
+    const q = questions[idx];
+    document.getElementById('q-counter').textContent = `${idx + 1} / 12`;
+    document.getElementById('q-category').textContent = q.category;
+    document.getElementById('q-method').textContent = q.method;
+    document.getElementById('q-text').textContent = q.text;
+    document.getElementById('q-hint').textContent = q.hint;
+    document.getElementById('progress-fill').style.width = `${Math.round((idx / 12) * 100)}%`;
+
+    const imgEl = document.getElementById('q-img');
+    if (q.needImg) {
+      imgEl.style.display = 'flex';
+      document.getElementById('q-img-label').textContent = q.imgLabel;
+    } else {
+      imgEl.style.display = 'none';
+    }
+
+    const optContainer = document.getElementById('q-options');
+    optContainer.innerHTML = '';
+    q.options.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'opt-btn' + (answers[idx] === i ? ' selected' : '');
+      btn.setAttribute('role', 'radio');
+      btn.setAttribute('aria-checked', answers[idx] === i ? 'true' : 'false');
+      btn.innerHTML = `<span class="opt-dot"></span><span>${opt}</span>`;
+      btn.onclick = () => selectOption(i);
+      optContainer.appendChild(btn);
+    });
+
+    const skipBtn = document.getElementById('q-skip');
+    skipBtn.className = 'opt-skip' + (answers[idx] === -1 ? ' selected' : '');
+
+    updateNav();
+  }
+
+  function selectOption(i) {
+    answers[currentQ] = i;
+    renderQ(currentQ);
+  }
+
+  function updateNav() {
+    const hasAnswer = answers[currentQ] !== null;
+    document.getElementById('btn-next').disabled = !hasAnswer;
+    document.getElementById('btn-prev').disabled = currentQ === 0;
+    document.getElementById('btn-next').textContent = currentQ === 11 ? '결과 보기 →' : '다음 →';
+  }
+
+  function nextQ() {
+    if (currentQ < 11) {
+      currentQ++;
+      renderQ(currentQ);
+    } else {
+      showResult();
+    }
+  }
+
+  function prevQ() {
+    if (currentQ > 0) {
+      currentQ--;
+      renderQ(currentQ);
+    }
+  }
+
+  function calcScores() {
+    let w = 0, s = 0, n = 0;
+    answers.forEach((ans, i) => {
+      if (ans === null || ans === -1) return;
+      const sc = questions[i].scores[ans];
+      w += sc[0]; s += sc[1]; n += sc[2];
+    });
+
+    if (currentMode === 'precise') {
+      const wrist = parseFloat(document.getElementById('m-wrist').value);
+      if (!isNaN(wrist)) {
+        if (wrist < 14) w += 3;
+        else if (wrist <= 16) s += 3;
+        else n += 3;
+      }
+      const shoulder = parseFloat(document.getElementById('m-shoulder').value);
+      const hip = parseFloat(document.getElementById('m-hip').value);
+      if (!isNaN(shoulder) && !isNaN(hip)) {
+        if (hip > shoulder + 4) w += 2;
+        else if (shoulder > hip + 2) s += 2;
+        else n += 1;
+      }
+    }
+
+    const total = w + s + n || 1;
+    return {
+      wave: Math.round((w / total) * 100),
+      straight: Math.round((s / total) * 100),
+      natural: Math.round((n / total) * 100),
+      dominant: w >= s && w >= n ? 'wave' : s >= n ? 'straight' : 'natural'
+    };
+  }
+
+  function showResult() {
+    showScreen('screen-result');
+    const sc = calcScores();
+    const dom = resultData[sc.dominant];
+
+    document.getElementById('result-badge').textContent = dom.label;
+    document.getElementById('result-badge').className = 'result-badge ' + dom.badgeClass;
+    document.getElementById('result-title').textContent = dom.label;
+    document.getElementById('result-sub').textContent = `웨이브 ${sc.wave}% · 스트레이트 ${sc.straight}% · 내츄럴 ${sc.natural}%`;
+
+    document.getElementById('score-wave').textContent = sc.wave + '%';
+    document.getElementById('score-straight').textContent = sc.straight + '%';
+    document.getElementById('score-natural').textContent = sc.natural + '%';
+
+    ['wave','straight','natural'].forEach(k => {
+      document.getElementById('card-' + k).classList.toggle('dominant', sc.dominant === k);
+    });
+
+    document.getElementById('result-desc-title').textContent = dom.descTitle;
+    document.getElementById('result-desc-text').textContent = dom.desc;
+
+    const tagRow = document.getElementById('result-tags');
+    tagRow.innerHTML = '';
+    dom.tags.forEach(t => {
+      const span = document.createElement('span');
+      span.className = 'tag';
+      span.textContent = t;
+      tagRow.appendChild(span);
+    });
+
+    const tipList = document.getElementById('result-tips');
+    tipList.innerHTML = '';
+    dom.tips.forEach(t => {
+      const li = document.createElement('li');
+      li.textContent = t;
+      tipList.appendChild(li);
+    });
+
+    drawRadar(sc.wave, sc.straight, sc.natural);
+  }
+
+  function drawRadar(wave, straight, natural) {
+    const canvas = document.getElementById('radarChart');
+    if (radarInstance) { radarInstance.destroy(); radarInstance = null; }
+
+    const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const gridColor = dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.07)';
+    const labelColor = dark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.45)';
+
+    radarInstance = new Chart(canvas, {
+      type: 'radar',
+      data: {
+        labels: ['웨이브', '스트레이트', '내츄럴'],
+        datasets: [{
+          data: [wave, straight, natural],
+          backgroundColor: dark ? 'rgba(127,119,221,0.2)' : 'rgba(127,119,221,0.12)',
+          borderColor: '#7F77DD',
+          borderWidth: 1.5,
+          pointBackgroundColor: '#7F77DD',
+          pointRadius: 4,
+          pointHoverRadius: 6
+        }]
+      },
+      options: {
+        responsive: false,
+        scales: {
+          r: {
+            min: 0, max: 100,
+            ticks: { display: false, stepSize: 25 },
+            grid: { color: gridColor },
+            angleLines: { color: gridColor },
+            pointLabels: { color: labelColor, font: { size: 13, family: "'Noto Sans KR', sans-serif" } }
+          }
+        },
+        plugins: { legend: { display: false } }
+      }
+    });
+  }
+
+  function shareResult() {
+    const sc = calcScores();
+    const dom = resultData[sc.dominant];
+    const text = `골격 자가 진단 결과: ${dom.label}\n웨이브 ${sc.wave}% · 스트레이트 ${sc.straight}% · 내츄럴 ${sc.natural}%\n${window.location.href}`;
+
+    if (navigator.share) {
+      navigator.share({ title: '골격 자가 진단 결과', text })
+        .catch(() => {});
+    } else {
+      navigator.clipboard.writeText(text)
+        .then(() => showToast('결과가 복사됐어요!'))
+        .catch(() => showToast('공유 기능을 지원하지 않는 브라우저예요.'));
+    }
+  }
+
+  function showToast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 2200);
+  }
+
+  function resetAll() {
+    currentQ = 0;
+    answers = new Array(12).fill(null);
+    if (radarInstance) { radarInstance.destroy(); radarInstance = null; }
+    showScreen('screen-mode');
+  }
+</script>
+</body>
+</html>
