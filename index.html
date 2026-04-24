@@ -22,8 +22,14 @@
   <meta name="twitter:title" content="골격 자가 진단">
   <meta name="twitter:description" content="웨이브, 스트레이트, 내츄럴 골격 유형을 12가지 자가 테스트로 진단해보세요.">
 
-  <!-- Umami Analytics: 아래 주석을 실제 Umami 스크립트로 교체하세요 -->
-  <!-- <script async src="https://analytics.umami.is/script.js" data-website-id="YOUR-WEBSITE-ID"></script> -->
+  <!-- Google Analytics -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXX');
+  </script> -->
 
   <!-- Chart.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -661,7 +667,7 @@
       text: "엄지와 검지로 반대쪽 손목을 감싸보세요.",
       hint: "뼈대의 굵기를 확인하는 문항이에요. 살이 아닌 뼈를 기준으로 생각해주세요.",
       method: "행동 기반", category: "뼈 두께",
-      needImg: true, imgLabel: "IMG-01 · 손목 감싸기 방법 + 결과 3단계 비교",
+      needImg: true, imgLabel: "images/IMG-01.png",
       options: ["손가락이 겹친다", "딱 맞다", "닿지 않는다"],
       scores: [[3,0,0],[0,3,0],[0,0,3]]
     },
@@ -669,7 +675,7 @@
       text: "쇄골 위 오목한 곳에 손가락을 올려보세요.",
       hint: "목 아래, 가슴 위쪽 쇄골 바로 위의 움푹 들어간 부분이에요.",
       method: "행동 기반", category: "뼈 두께",
-      needImg: true, imgLabel: "IMG-02 · 쇄골 위치 표시 + 손가락 올리는 방향",
+      needImg: true, imgLabel: "images/IMG-02.png",
       options: ["손가락 2개 이상 들어간다", "1개 들어간다", "거의 안 들어간다"],
       scores: [[3,0,0],[1,2,0],[0,1,3]]
     },
@@ -677,7 +683,7 @@
       text: "어깨 끝을 손으로 만져보세요.",
       hint: "어깨 가장 바깥쪽 끝부분을 손가락으로 눌러보세요.",
       method: "행동 기반", category: "어깨 골격",
-      needImg: true, imgLabel: "IMG-03 · 어깨 끝(견봉) 위치 표시",
+      needImg: true, imgLabel: "images/IMG-03.png",
       options: ["뾰족한 뼈가 뚜렷하게 만져진다", "살짝 만져진다", "잘 안 만져진다"],
       scores: [[0,0,3],[0,2,1],[3,0,0]]
     },
@@ -685,7 +691,7 @@
       text: "주먹을 꽉 쥐고 손가락 관절을 봐주세요.",
       hint: "손등 쪽 손가락 마디가 얼마나 튀어오르는지 확인해요.",
       method: "행동 기반", category: "관절 크기",
-      needImg: true, imgLabel: "IMG-04 · 관절 올라온 정도 3단계 비교",
+      needImg: true, imgLabel: "images/IMG-04.png",
       options: ["관절이 뚜렷하게 올라온다", "살짝 올라온다", "거의 평평하다"],
       scores: [[0,0,3],[0,2,1],[3,0,0]]
     },
@@ -693,7 +699,7 @@
       text: "무릎 앞 슬개골(무릎뼈)이 눈에 띄나요?",
       hint: "서 있거나 앉은 상태에서 무릎 정면을 봐주세요. 무릎뼈가 도드라져 보이는 정도예요.",
       method: "관찰 기반", category: "관절 크기",
-      needImg: true, imgLabel: "IMG-05 · 슬개골 위치 + 뚜렷한 정도 3단계 비교",
+      needImg: true, imgLabel: "images/IMG-05.png",
       options: ["거의 안 보인다", "살짝 보인다", "뚜렷하게 튀어나와 보인다"],
       scores: [[3,1,0],[0,2,1],[0,0,3]]
     },
@@ -701,7 +707,7 @@
       text: "옆에서 본 내 몸의 두께는 어떤가요?",
       hint: "거울 또는 사진을 참고해주세요. 앞뒤(가슴-등) 방향 두께를 봐요.",
       method: "상대 비교", category: "신체 두께",
-      needImg: true, imgLabel: "IMG-06 · 측면 실루엣 3단계 비교 (납작 / 보통 / 두꺼움)",
+      needImg: true, imgLabel: "images/IMG-06.png",
       options: ["납작한 편이다", "보통이다", "앞뒤로 두꺼운 편이다"],
       scores: [[3,0,0],[0,3,0],[0,0,3]]
     },
@@ -717,7 +723,7 @@
       text: "정면에서 봤을 때 허리가 어깨·골반보다 얼마나 들어가 있나요?",
       hint: "어깨 너비와 골반 너비를 기준으로, 허리가 얼마나 잘록한지 봐요.",
       method: "상대 비교", category: "허리 라인",
-      needImg: true, imgLabel: "IMG-08 · 허리 들어간 정도 3단계 실루엣",
+      needImg: true, imgLabel: "images/IMG-08.png",
       options: ["뚜렷하게 들어간다", "약간 들어간다", "거의 차이가 없다"],
       scores: [[3,0,0],[1,2,0],[0,2,1]]
     },
@@ -749,7 +755,7 @@
       text: "전체적인 몸의 인상은 어떤가요?",
       hint: "본인 또는 주변 사람이 느끼는 첫인상을 떠올려보세요.",
       method: "종합 인상", category: "골격 종합",
-      needImg: true, imgLabel: "IMG-12 · 웨이브·스트레이트·내츄럴 전신 실루엣 비교",
+      needImg: false,
       options: ["가볍고 부드러운 느낌", "탄탄하고 직선적인 느낌", "크고 존재감 있는 느낌"],
       scores: [[3,0,0],[0,3,0],[0,0,3]]
     }
@@ -839,8 +845,9 @@
 
     const imgEl = document.getElementById('q-img');
     if (q.needImg) {
-      imgEl.style.display = 'flex';
-      document.getElementById('q-img-label').textContent = q.imgLabel;
+      imgEl.style.display = 'block';
+      imgEl.innerHTML = `<img src="${q.imgLabel}" alt="${q.text}" 
+        style="width:100%; border-radius:8px; display:block;">`;
     } else {
       imgEl.style.display = 'none';
     }
