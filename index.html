@@ -536,7 +536,7 @@
     </div>
 
     <button class="btn-main" onclick="startTest()">시작하기</button>
-    <p class="hint-text">총 12문항 · 약 5분 소요 · 개인정보 수집 없음</p>
+    <p class="hint-text">총 12문항 · 약 5분 소요 </p>
   </section>
 
   <!-- SCREEN 1: MEASURE -->
@@ -658,9 +658,6 @@
   </section>
 
 </div>
-
-<!-- toast -->
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
   const questions = [
@@ -1040,5 +1037,15 @@
     showScreen('screen-mode');
   }
 </script>
+
+  <footer style="text-align:center; padding: 24px 20px; font-size: 12px; color: var(--text-tertiary);">
+    이 사이트는 응답 내용 등 개인 정보를 수집하지 않으며, 방문 통계 수집만을 위해 Google Analytics를 사용합니다.
+    <br>
+    Made by <a href="www.linkedin.com/in/2shin0">이신영</a>
+  </footer>
+
+  <!-- toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
 </body>
 </html>
